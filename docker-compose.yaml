@@ -1,0 +1,31 @@
+version: '3.4'
+
+services:
+  app:
+    container_name: ${SPACE_STATION_NAMESPACE}-${SPACE_STATION_SERVICE_NAME}
+    image: ${SPACE_STATION_NAMESPACE}/${SPACE_STATION_SERVICE_NAME}
+    build:
+      context: .
+      dockerfile: ./docker/app/Dockerfile
+      labels:
+        - "com.space.station.vendor=${SPACE_STATION_COMPANY_NAME}"
+        - "com.space.station.project=${SPACE_STATION_NAMESPACE}"
+        - "com.space.station.version=${APP_VERSION}"
+        - "com.space.station.description=${SPACE_STATION_DESCRIPTION}"
+        - "com.space.station.environment=${APP_ENV}"
+        - "com.space.station.debug=${APP_DEBUG}"
+        - "com.space.station.name=${APP_NAME}"
+        - "com.space.station.framework=Laravel"
+    environment:
+      VIRTUAL_HOST: ${SPACE_STATION_APP_DOMAIN}
+      VIRTUAL_PORT: 80
+    volumes:
+      - ./:/opt/app
+    restart: always
+    networks:
+      - dev-env-network
+
+networks:
+  dev-env-network:
+    external:
+      name: dev-env-network

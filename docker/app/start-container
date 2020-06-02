@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# Config /etc/php/7.3/mods-available/xdebug.ini
+sed -i "s/xdebug\.remote_host\=.*/xdebug\.remote_host\=$XDEBUG_HOST/g" /etc/php/7.3/mods-available/xdebug.ini
+
+# Ensure /.composer exists and is writable
+if [ ! -d /.composer ]; then
+    mkdir /.composer
+fi
+
+chmod -R ugo+rw /.composer
+
+# Run a command or supervisord
+if [ $# -gt 0 ];then
+    # If we passed a command, run it as current user
+    exec "$@"
+fi

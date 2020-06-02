@@ -8,4 +8,6 @@ fi
 
 php /var/www/html/artisan migrate
 
+/usr/bin/npm install
+
 exec "$@"
